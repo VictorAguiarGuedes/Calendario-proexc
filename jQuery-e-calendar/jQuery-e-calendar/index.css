@@ -1,0 +1,82 @@
+.calendario {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+}
+
+.calendar {
+	width: 90%;
+	height: 520px;
+}
+
+.c-grid-title {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: gray;
+	height: 9.5%;
+}
+
+.c-month {
+	width: 74.9%;
+}
+
+.c-event-title	{
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	background-color: gray;
+	height: 9.5%;
+}
+
+.c-week-day {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	background-color: darkred;
+	height: 9.5%;
+}
+
+.c-event-body {
+	height: 90.5%;
+}
+
+.c-nav-btn-over {
+    background-color: gray !important;
+    font-weight: bold;
+}
+
+.c-grid {
+	box-shadow: none;
+	width: 60%;
+}
+
+.c-event-grid {
+	box-shadow: none;
+	width: 35%;
+}
+
+.calendar .c-pad-top {
+	padding-top: 0;
+}
+
+.c-day {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 13.5%;
+}
+
+.c-day-next-month {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 13.5%;
+}
+
+.c-day-previous-month {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 13.5%;
+}
