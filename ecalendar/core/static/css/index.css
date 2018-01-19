@@ -13,7 +13,7 @@
 	display: flex;
     align-items: center;
     justify-content: center;
-    background-color: gray;
+    background-color: #414141;
 	height: 9.5%;
 }
 
@@ -24,8 +24,9 @@
 .c-event-title	{
 	display: flex;
     align-items: center;
-    justify-content: center;
-	background-color: gray;
+    justify-content: flex-start;
+    padding-left: 20px;
+	background-color: #414141;
 	height: 9.5%;
 }
 
@@ -33,12 +34,13 @@
 	display: flex;
     align-items: center;
     justify-content: center;
-	background-color: darkred;
+	background-color: #5C171F;
 	height: 9.5%;
 }
 
 .c-event-body {
 	height: 90.5%;
+	background-color: #E8E8E8;
 }
 
 .c-nav-btn-over {
@@ -53,7 +55,7 @@
 
 .c-event-grid {
 	box-shadow: none;
-	width: 35%;
+	width: 39%;
 }
 
 .calendar .c-pad-top {
@@ -65,6 +67,7 @@
     align-items: center;
     justify-content: center;
     height: 13.5%;
+    background-color: #E8E8E8;
 }
 
 .c-day-next-month {
@@ -72,6 +75,7 @@
     align-items: center;
     justify-content: center;
     height: 13.5%;
+    background-color: #E8E8E8;
 }
 
 .c-day-previous-month {
@@ -79,4 +83,38 @@
     align-items: center;
     justify-content: center;
     height: 13.5%;
+    background-color: #E8E8E8;
+}
+
+.c-today {
+	background-color: white;
+}
+
+.c-event {
+	background-color: #5C171F;
+}
+
+/*Parte Lateral*/
+
+.title {
+	color: darkred;
+}
+
+.description {
+	display: inline;
+	color: gray;
+}
+
+.c-event-list {
+	padding: 20px 10px;
+}
+
+.c-event-item > div {
+	white-space: normal;
+}
+
+.fa.fa-map-marker {
+	padding-right: 10px;
+	color: gray;
+	font-size: 18px;
 }

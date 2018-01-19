@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="{% static 'jQuery-e-calendar/css/jquery.e-calendar.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="{% static 'jQuery-e-calendar/js/jquery.e-calendar.js' %}"></script>
+	
+</head>
+<body>
+	<div class="calendario">
+		<div id="calendar"></div>
+	</div>
+	{% if Eventos == None %}
+		<h2>Não há eventos cadastrados</h2>
+	{% else %}
+		<script>
+			$(document).ready(function () {
+	    		$('#calendar').eCalendar({
+			 		weekDays: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+			        months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+			        textArrows: {previous: '<', next: '>'},
+			        eventTitle: 'Eventos do mês',
+			        url: '',
+				    events: [
+				        {% for evento in Eventos %}
+				            {title: '{{evento.titulo}}', description: '{{evento.descricao}}', datetime: new Date({{evento.ano}}, {{evento.mes}}-1, {{evento.dia}}, {{evento.horario}})},
+						{% endfor %}
+		        	]
+	        	});
+			});
+		</script>	
+	{% endif %}
+	<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

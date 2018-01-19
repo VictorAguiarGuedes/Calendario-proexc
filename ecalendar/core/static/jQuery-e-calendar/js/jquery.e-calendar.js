@@ -179,6 +179,11 @@
             $(instance).addClass('calendar');
             cEventsBody.append(eventList);
             $(instance).html(cBody).append(cEvents);
+
+            $(".title").after("<br>");
+            $(".description").after("<br>");
+            $(".description").before("<i></i>");
+            $("i").addClass('fa fa-map-marker');
         }
 
         return print();
