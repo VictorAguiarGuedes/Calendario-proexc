@@ -2,11 +2,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
 	<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="{% static 'jQuery-e-calendar/css/jquery.e-calendar.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/eventmodal.css' %}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="{% static 'jQuery-e-calendar/js/jquery.e-calendar.js' %}"></script>
@@ -36,6 +39,34 @@
 			});
 		</script>	
 	{% endif %}
+
+	<div class="modal-event" id="id-modal-event">
+		<div class="modal-event-content">
+			<div class="modal-event-column">
+				<div class="modal-event-close"> 
+					<!-- <i class="fa fa-bars" aria-hidden="true"></i> -->
+					<img src="{% static 'img/x.png' %}"  onclick="closeEventModal()">
+				</div>
+
+				<div class="modal-event-row">
+					<div class="modal-event-content-left">
+						<div class="modal-event-img" style="background-image: url('{% static 'img/event-img.jpg' %}');"></div>
+						<!-- <img src="http://via.placeholder.com/250x250"> -->
+						<!-- <i class="fa fa-map-marker" aria-hidden="true"></i> -->
+						<span><img src="{% static 'img/local.png' %}">Avenida Rafael Veiga, 66.</span>
+					</div>
+
+					<div class="modal-event-content-right">
+						<div class="modal-event-title">Festival Varilux do Monte de Conde Cristo</div>
+						<div class="modal-event-date"><span>DATA DO EVENTO: </span> 22/08/2010</div>
+						<p class="modal-event-info">
+							Inaugurado no dia 6 de setembro de 1952 e situado às margens do Rio Capibaribe e na cabeceira da mais moderna ponte da cidade à época, a Ponte Duarte Coelho, o São Luiz tornou‐se um dos mais emblemáticos cinemas do Recife, prezando por essa arte em sua concepção clássica, com exibição em cine‐teatro. Hoje o Cinema São Luiz é o de mais rica concepção artística e arquitetônica do Recife e um dos últimos cinemas de rua do país.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
 	<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
