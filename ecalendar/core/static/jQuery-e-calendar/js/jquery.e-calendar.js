@@ -184,6 +184,15 @@
             $(".description").after("<br>");
             $(".description").before("<i></i>");
             $("i").addClass('fa fa-map-marker');
+
+            $(".c-event-item").bind('click', function() {
+                openEventModal();
+            });
+
+            $(".c-event").append("<div></div>");
+            $(".c-day").append("<div></div>");
+            $(".c-day-next-month").append("<div></div>");
+            $(".c-day-previous-month").append("<div></div>");
         }
 
         return print();
@@ -194,6 +203,8 @@
             return eCalendar(oInit, $(this));
         });
     };
+
+
 
     // plugin defaults
     $.fn.eCalendar.defaults = {
