@@ -27,6 +27,7 @@ body {
 .modal-event-column {
 	display: flex;
 	flex-direction: column;
+	width: 100%;
 }
 
 .modal-event-row {
@@ -103,6 +104,10 @@ body {
 	text-align: justify;
 	font-size: 14px;
 	color: #4A4A4A;
+}
+
+#modal-event-address, #modal-date {
+	display: inline;
 }
 
 @media (max-width: 760px) {

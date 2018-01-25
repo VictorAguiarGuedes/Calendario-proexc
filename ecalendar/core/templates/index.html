@@ -12,8 +12,6 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/eventmodal.css' %}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src="{% static 'jQuery-e-calendar/js/jquery.e-calendar.js' %}"></script>
-	
 </head>
 <body>
 	<div class="calendario">
@@ -32,7 +30,7 @@
 			        url: '',
 				    events: [
 				        {% for evento in Eventos %}
-				            {title: '{{evento.titulo}}', description: '{{evento.descricao}}', datetime: new Date({{evento.ano}}, {{evento.mes}}-1, {{evento.dia}}, {{evento.horario}})},
+				            {title: '{{evento.titulo}}', description: '{{evento.endereco}}', datetime: new Date({{evento.ano}}, {{evento.mes}}-1, {{evento.dia}}, {{evento.horario}})},
 						{% endfor %}
 		        	]
 	        	});
@@ -40,6 +38,7 @@
 		</script>	
 	{% endif %}
 
+	<!-- 		///// MODAL ///// 		-->
 	<div class="modal-event" id="id-modal-event">
 		<div class="modal-event-content">
 			<div class="modal-event-column">
@@ -50,16 +49,17 @@
 
 				<div class="modal-event-row">
 					<div class="modal-event-content-left">
-						<div class="modal-event-img" style="background-image: url('{% static 'img/event-img.jpg' %}');"></div>
+						<div id="modal-img" class="modal-event-img" style="background-image: url('{% static 'img/event-img.jpg' %}');"></div>
 						<!-- <img src="http://via.placeholder.com/250x250"> -->
 						<!-- <i class="fa fa-map-marker" aria-hidden="true"></i> -->
-						<span><img src="{% static 'img/local.png' %}">Avenida Rafael Veiga, 66.</span>
+						
+						<span><img src="{% static 'img/local.png' %}"><div id="modal-event-address">Avenida Rafael Veiga, 66.</div></span>
 					</div>
 
 					<div class="modal-event-content-right">
-						<div class="modal-event-title">Festival Varilux do Monte de Conde Cristo</div>
-						<div class="modal-event-date"><span>DATA DO EVENTO: </span> 22/08/2010</div>
-						<p class="modal-event-info">
+						<div class="modal-event-title"><div id="modal-title">Festival Varilux do Monte de Conde Cristo</div></div>
+						<div class="modal-event-date"><span>DATA DO EVENTO: </span><div id="modal-date">22/08/2010</div> </div>
+						<p id="modal-descricao" class="modal-event-info">
 							Inaugurado no dia 6 de setembro de 1952 e situado às margens do Rio Capibaribe e na cabeceira da mais moderna ponte da cidade à época, a Ponte Duarte Coelho, o São Luiz tornou‐se um dos mais emblemáticos cinemas do Recife, prezando por essa arte em sua concepção clássica, com exibição em cine‐teatro. Hoje o Cinema São Luiz é o de mais rica concepção artística e arquitetônica do Recife e um dos últimos cinemas de rua do país.
 						</p>
 					</div>
@@ -67,6 +67,259 @@
 			</div>
 		</div>		
 	</div>
+
+	<script>
+		/**
+		 * @license e-Calendar v0.9.3
+		 * (c) 2014-2016 - Jhonis de Souza
+		 * License: GNU
+		 */
+
+		(function ($) {
+
+		    var eCalendar = function (options, object) {
+		        // Initializing global variables
+		        var adDay = new Date().getDate();
+		        var adMonth = new Date().getMonth();
+		        var adYear = new Date().getFullYear();
+		        var dDay = adDay;
+		        var dMonth = adMonth;
+		        var dYear = adYear;
+		        var instance = object;
+
+		        var settings = $.extend({}, $.fn.eCalendar.defaults, options);
+
+		        function lpad(value, length, pad) {
+		            if (typeof pad == 'undefined') {
+		                pad = '0';
+		            }
+		            var p;
+		            for (var i = 0; i < length; i++) {
+		                p += pad;
+		            }
+		            return (p + value).slice(-length);
+		        }
+
+		        var mouseOver = function () {
+		            $(this).addClass('c-nav-btn-over');
+		        };
+		        var mouseLeave = function () {
+		            $(this).removeClass('c-nav-btn-over');
+		        };
+		        var mouseOverEvent = function () {
+		            $(this).addClass('c-event-over');
+		            var d = $(this).attr('data-event-day');
+		            $('div.c-event-item[data-event-day="' + d + '"]').addClass('c-event-over');
+		        };
+		        var mouseLeaveEvent = function () {
+		            $(this).removeClass('c-event-over')
+		            var d = $(this).attr('data-event-day');
+		            $('div.c-event-item[data-event-day="' + d + '"]').removeClass('c-event-over');
+		        };
+		        var mouseOverItem = function () {
+		            $(this).addClass('c-event-over');
+		            var d = $(this).attr('data-event-day');
+		            $('div.c-event[data-event-day="' + d + '"]').addClass('c-event-over');
+		        };
+		        var mouseLeaveItem = function () {
+		            $(this).removeClass('c-event-over')
+		            var d = $(this).attr('data-event-day');
+		            $('div.c-event[data-event-day="' + d + '"]').removeClass('c-event-over');
+		        };
+		        var nextMonth = function () {
+		            if (dMonth < 11) {
+		                dMonth++;
+		            } else {
+		                dMonth = 0;
+		                dYear++;
+		            }
+		            print();
+		        };
+		        var previousMonth = function () {
+		            if (dMonth > 0) {
+		                dMonth--;
+		            } else {
+		                dMonth = 11;
+		                dYear--;
+		            }
+		            print();
+		        };
+
+		        function loadEvents() {
+		            if (typeof settings.url != 'undefined' && settings.url != '') {
+		                $.ajax({url: settings.url,
+		                    async: false,
+		                    success: function (result) {
+		                        settings.events = result;
+		                    }
+		                });
+		            }
+		        }
+
+		        function print() {
+		            loadEvents();
+		            var dWeekDayOfMonthStart = new Date(dYear, dMonth, 1).getDay() - settings.firstDayOfWeek;
+		            if (dWeekDayOfMonthStart < 0) {
+		                dWeekDayOfMonthStart = 6 - ((dWeekDayOfMonthStart + 1) * -1);
+		            }
+		            var dLastDayOfMonth = new Date(dYear, dMonth + 1, 0).getDate();
+		            var dLastDayOfPreviousMonth = new Date(dYear, dMonth + 1, 0).getDate() - dWeekDayOfMonthStart + 1;
+
+		            var cBody = $('<div/>').addClass('c-grid');
+		            var cEvents = $('<div/>').addClass('c-event-grid');
+		            var cEventsBody = $('<div/>').addClass('c-event-body');
+		            cEvents.append($('<div/>').addClass('c-event-title c-pad-top').html(settings.eventTitle));
+		            cEvents.append(cEventsBody);
+		            var cNext = $('<div/>').addClass('c-next c-grid-title c-pad-top');
+		            var cMonth = $('<div/>').addClass('c-month c-grid-title c-pad-top');
+		            var cPrevious = $('<div/>').addClass('c-previous c-grid-title c-pad-top');
+		            cPrevious.html(settings.textArrows.previous);
+		            cMonth.html(settings.months[dMonth] + ' ' + dYear);
+		            cNext.html(settings.textArrows.next);
+
+		            cPrevious.on('mouseover', mouseOver).on('mouseleave', mouseLeave).on('click', previousMonth);
+		            cNext.on('mouseover', mouseOver).on('mouseleave', mouseLeave).on('click', nextMonth);
+
+		            cBody.append(cPrevious);
+		            cBody.append(cMonth);
+		            cBody.append(cNext);
+		            var dayOfWeek = settings.firstDayOfWeek;
+		            for (var i = 0; i < 7; i++) {
+		                if (dayOfWeek > 6) {
+		                    dayOfWeek = 0;
+		                }
+		                var cWeekDay = $('<div/>').addClass('c-week-day c-pad-top');
+		                cWeekDay.html(settings.weekDays[dayOfWeek]);
+		                cBody.append(cWeekDay);
+		                dayOfWeek++;
+		            }
+		            var day = 1;
+		            var dayOfNextMonth = 1;
+		            for (var i = 0; i < 42; i++) {
+		                var cDay = $('<div/>');
+		                if (i < dWeekDayOfMonthStart) {
+		                    cDay.addClass('c-day-previous-month c-pad-top');
+		                    cDay.html(dLastDayOfPreviousMonth++);
+		                } else if (day <= dLastDayOfMonth) {
+		                    cDay.addClass('c-day c-pad-top');
+		                    if (day == dDay && adMonth == dMonth && adYear == dYear) {
+		                        cDay.addClass('c-today');
+		                    }
+		                    for (var j = 0; j < settings.events.length; j++) {
+		                        var d = settings.events[j].datetime;
+		                        if (d.getDate() == day && d.getMonth() == dMonth && d.getFullYear() == dYear) {
+		                            cDay.addClass('c-event').attr('data-event-day', d.getDate());
+		                            cDay.on('mouseover', mouseOverEvent).on('mouseleave', mouseLeaveEvent);
+		                        }
+		                    }
+		                    cDay.html(day++);
+		                } else {
+		                    cDay.addClass('c-day-next-month c-pad-top');
+		                    cDay.html(dayOfNextMonth++);
+		                }
+		                cBody.append(cDay);
+		            }
+		            var eventList = $('<div/>').addClass('c-event-list');
+		            for (var i = 0; i < settings.events.length; i++) {
+		                var d = settings.events[i].datetime;
+		                if (d.getMonth() == dMonth && d.getFullYear() == dYear) {
+		                    var date = lpad(d.getDate(), 2) + '/' + lpad(d.getMonth() + 1, 2) + ' ' + lpad(d.getHours(), 2) + ':' + lpad(d.getMinutes(), 2);
+		                    var item = $('<div/>').addClass('c-event-item');
+		                    var title = $('<div/>').addClass('title').html(date + '  ' + settings.events[i].title + '<br/>');
+		                    var description = $('<div/>').addClass('description').html(settings.events[i].description + '<br/>');
+		                    item.attr('data-event-day', d.getDate());
+		                    item.on('mouseover', mouseOverItem).on('mouseleave', mouseLeaveItem);
+		                    item.append(title).append(description);
+
+		                    // Add the url to the description if is set
+		                    if( settings.events[i].url !== undefined )
+		                    {
+		                        /**
+		                         * If the setting url_blank is set and is true, the target of the url
+		                         * will be "_blank"
+		                         */
+		                        type_url = settings.events[i].url_blank !== undefined && 
+		                                   settings.events[i].url_blank === true ? 
+		                                   '_blank':'';
+		                        description.wrap( '<a href="'+ settings.events[i].url +'" target="'+type_url+'" ></a>' );
+		                    }
+
+		                    eventList.append(item);
+		                }
+		            }
+
+		            $(instance).addClass('calendar');
+		            cEventsBody.append(eventList);
+		            $(instance).html(cBody).append(cEvents);
+
+		            $(".title").after("<br>");
+		            $(".description").after("<br>");
+		            $(".description").before("<i></i>");
+		            $("i").addClass('fa fa-map-marker');
+
+		            function openEventModal() {
+		                me.style.display = "flex";
+		            }
+		            
+		            $(".c-event-list").click(function(e) {
+
+		            	if($(e.target).hasClass("c-event-item")){
+		            		var titulo = $(e.target).children(".title").text()
+
+		        		}else{
+							var parent = $(e.target).parent(".c-event-item")
+							var titulo = parent.children(".title").text()
+						}
+		        		{% for evento in Eventos %}
+		        			console.log("{{evento.imagem}}")
+			        		if("{{evento}}".replace(/\s+/g, '') === titulo.replace(/\s+/g, '')){
+			            		$("#modal-event-address").text("{{evento.endereco}}")
+			            		$("#modal-title").text("{{evento.titulo}}")
+			            		$("#modal-date").text("{{evento.dia}}" + "/" + "{{evento.mes}}" + "/" + "{{evento.ano}}")
+			            		$("#modal-descricao").text("{{evento.descricao}}")
+			            		let path = "{{evento.imagem}}"
+			            		let file = path.split("/")
+			       				file = file[3]
+			            		console.log(file)
+			            		/*$("#modal-img").css("background-image", "url('{% static 'img/file' %}')")*/
+			            		$("#modal-img").css("background-image", "url(../core/static/img/event-img.png)")
+			            	}
+		                {% endfor %}
+		        		openEventModal();  
+		            });
+
+		            $(".c-event").append("<div></div>");
+		            $(".c-day").append("<div></div>");
+		            $(".c-day-next-month").append("<div></div>");
+		            $(".c-day-previous-month").append("<div></div>");
+		        }
+
+		        return print();
+		    }
+
+		    $.fn.eCalendar = function (oInit) {
+		        return this.each(function () {
+		            return eCalendar(oInit, $(this));
+		        });
+		    };
+
+		    // plugin defaults
+		    $.fn.eCalendar.defaults = {
+		        weekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+		        months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+		        textArrows: {previous: '<', next: '>'},
+		        eventTitle: 'Eventos',
+		        url: '',
+		        events: [
+		            {title: 'Evento de Abertura', description: 'Abertura das Olimpíadas Rio 2016', datetime: new Date(2016, new Date().getMonth(), 12, 17)},
+		            {title: 'Tênis de Mesa', description: 'BRA x ARG - Semifinal', datetime: new Date(2016, new Date().getMonth(), 23, 16)},
+		            {title: 'Ginástica Olímpica', description: 'Classificatórias de equipes', datetime: new Date(2016, new Date().getMonth(), 31, 16)}
+		        ],
+		        firstDayOfWeek: 0
+		    };
+
+		}(jQuery));
+	</script>
 	<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

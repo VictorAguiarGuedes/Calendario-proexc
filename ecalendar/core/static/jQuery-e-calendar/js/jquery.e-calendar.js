@@ -185,6 +185,11 @@
             $(".description").before("<i></i>");
             $("i").addClass('fa fa-map-marker');
 
+            function openEventModal(address) {
+                me.style.display = "flex";
+                $('#modal-event-address').text(address)
+            }
+            
             $(".c-event-item").bind('click', function() {
                 openEventModal();
             });
