@@ -3,7 +3,7 @@ from .models import *
 
 # Create your views here.
 def index(request):
-	evento = Eventos.objects.order_by('dia', 'mes', 'ano')
+	evento = Evento.objects.order_by('dia', 'mes', 'ano')
 	if not evento:
 		evento = None
 	return render(

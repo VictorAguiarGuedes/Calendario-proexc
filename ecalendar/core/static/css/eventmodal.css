@@ -57,6 +57,10 @@ body {
 }
 
 .modal-event-content-left {
+	align-items: center;
+}
+
+.modal-event-content-left {
 	width: 35%;
 	font-size: 14px;
 	color: #7F7F7F;
@@ -67,6 +71,9 @@ body {
 }
 
 .modal-event-img {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 	height: 250px;
 	width: 250px;
 	margin-bottom: 10px;
@@ -130,8 +137,8 @@ body {
 	}
 
 	.modal-event-img {
-		height: 20vh;
-		width: 60vw;
+		height: 180px;
+		width: 180px;
 		background-repeat: no-repeat;
 		background-position: center;
 		background-size: cover;
@@ -147,5 +154,12 @@ body {
 
 	.modal-event-info, .modal-event-content-left {
 		font-size: 12px;
+	}
+}
+
+@media (max-width: 360px) {
+	.modal-event-img {
+		height: 150px;
+		width: 150px;
 	}
 }

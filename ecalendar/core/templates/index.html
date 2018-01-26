@@ -265,27 +265,26 @@
 
 		            	if($(e.target).hasClass("c-event-item")){
 		            		var titulo = $(e.target).children(".title").text()
-
+		            	} else if ($(e.target).hasClass("c-event-list")) {
+		            		return
 		        		}else{
 							var parent = $(e.target).parent(".c-event-item")
 							var titulo = parent.children(".title").text()
 						}
 		        		{% for evento in Eventos %}
-		        			console.log("{{evento.imagem}}")
 			        		if("{{evento}}".replace(/\s+/g, '') === titulo.replace(/\s+/g, '')){
 			            		$("#modal-event-address").text("{{evento.endereco}}")
 			            		$("#modal-title").text("{{evento.titulo}}")
 			            		$("#modal-date").text("{{evento.dia}}" + "/" + "{{evento.mes}}" + "/" + "{{evento.ano}}")
 			            		$("#modal-descricao").text("{{evento.descricao}}")
-			            		let path = "{{evento.imagem}}"
-			            		let file = path.split("/")
-			       				file = file[3]
-			            		console.log(file)
-			            		/*$("#modal-img").css("background-image", "url('{% static 'img/file' %}')")*/
-			            		$("#modal-img").css("background-image", "url(../core/static/img/event-img.png)")
+			            		if(("{{evento.imagem}}") === '') {
+			            			$("#modal-img").css("background-image", "url('static/img/Logo-ufpe.jpg')")
+			            		} else {
+			            			$("#modal-img").css("background-image", "url('static/img/{{evento.imagem}}')")
+			            		}
 			            	}
 		                {% endfor %}
-		        		openEventModal();  
+		        		openEventModal();
 		            });
 
 		            $(".c-event").append("<div></div>");

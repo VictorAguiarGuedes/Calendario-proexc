@@ -1,15 +1,18 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator
+from django.core.validators import int_list_validator
 
 # Create your models here.
-class Eventos(models.Model):
+class Evento(models.Model):
 	titulo = models.CharField(max_length=120)
 	endereco = models.CharField(max_length=120)
 	descricao = models.CharField(max_length=800)
 	dia = models.IntegerField()
 	mes = models.IntegerField()
 	ano = models.IntegerField()
-	horario = models.CharField(max_length=5)
-	imagem = models.ImageField(upload_to='static/img/', blank=True, null=True)
+	horario = models.CharField(max_length=5, validators=[int_list_validator(sep=',', message="Use vírgula (,) para separar as horas dos minutos"), MinLengthValidator(5,message="Horário no formato 00,00")])
+	imagem = models.FileField(blank=True, null=True)
 
 	def __str__(self):
 		horario = self.horario.replace(',', ':')
